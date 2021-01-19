@@ -1,10 +1,13 @@
-from cxiata import App
+from cxiata import *
+from PyQt5.QtWidgets import *
+from PyQt5.QtCore import *
+import sys
 
 def main():
     app = QApplication(sys.argv)
-    ex = Window()
-    ex.show()
+    ex = App()
     sys.exit(app.exec_())
 
 if __name__ == '__main__':
     main()
+    
