@@ -7,6 +7,8 @@ import numpy as np
 
 from tab1 import *
 from tab2 import *
+from tab3 import *
+
 class MyTabWidget(QWidget):
     def __init__(self, parent):
         super(QWidget, self).__init__(parent)
@@ -22,6 +24,7 @@ class MyTabWidget(QWidget):
         self.tab2_lib = tab2()
 
         self.tab3 = QWidget()
+        self.tab3_lib = tab3()
         self.tabs.resize(600, 400)
 
         # adding tabs
@@ -43,7 +46,7 @@ class MyTabWidget(QWidget):
 
         #pie chart
         self.tab2.layout.addWidget(self.tab2_lib.chartview)
-        
+
         self.tab2.sublayout_up = QHBoxLayout(self)
         self.tab2.sublayout_up.addWidget(self.tab2_lib.btn1)
         self.tab2.sublayout_up.addWidget(self.tab2_lib.btn2)
@@ -64,6 +67,14 @@ class MyTabWidget(QWidget):
         self.tab2.layout.addLayout( self.tab2.sublayout_down )
 
         self.tab2.setLayout(self.tab2.layout)
+
+        # create third tab
+        self.tab3.layout = QVBoxLayout(self)
+        self.tab3.layout.addWidget(self.tab3_lib.comboBox_Y)
+        self.tab3_lib.comboBox_Y.activated[str].connect(self.selectionchange_occurences_Y)
+        self.tab3.layout.addWidget(self.tab3_lib.chartView)
+        
+        self.tab3.setLayout(self.tab3.layout)
 
         # Add tabs to widget
         self.layout.addWidget(self.tabs)
@@ -167,3 +178,35 @@ class MyTabWidget(QWidget):
         self.tab2.mescomb.addWidget( self.tab2_lib.comboBox10 )
 
         self.tab2.sublayout_down.addLayout( self.tab2.mescomb )
+
+    def selectionchange_occurences_Y(self, i):
+        print("selection changed", self.tab3_lib.comboBox_Y.currentText())
+        self.this_data = self.data.dropna(subset=["LicensePlate","Barcode"], how="all")
+        self.this_data = self.this_data.reset_index()
+        self.this_data = self.this_data[["LicensePlate","Barcode", "Tunnel", "Source", "DestinationAirport", "ItemTime (local date)","Status", "PieceId"]]
+        if self.tab3_lib.comboBox_Y.currentText() == "noEDI":
+            self.this_data = self.this_data[~self.this_data["Source"].isin(["EDI+EDI"])]
+            self.this_data = self.this_data.reset_index()
+            self.this_data = self.this_data[["LicensePlate","Barcode", "Tunnel", "Source", "DestinationAirport", "ItemTime (local date)","Status", "PieceId"]]
+        
+        self.airline_data = []
+        self.airline_data_multi_occ = []
+    
+        for i in range(len(self.this_data["Barcode"])):
+            string = str(self.this_data["Barcode"][i])
+            if len(string) > 14:
+                self.airline_data_multi_occ.append(self.this_data["Barcode"][i])
+            if string=="nan":
+                string = str(self.this_data["LicensePlate"][i])
+                self.airline_data.append(string[1:4])
+            else:
+                self.airline_data.append(string[1:4])
+
+        self.airline_data= pd.DataFrame(self.airline_data, columns=["AirlineData"])
+        print(i)
+        self.this_data["AirlineData"] = self.airline_data
+        self.data_Y = self.this_data.groupby(["AirlineData","Source"])["AirlineData"].count()
+        self.keys_Y = self.data_Y.keys()
+        for i in range(len(data)):
+            print(self.keys_Y[i], " : ", self.data_Y[i])
+        self.update_bar()

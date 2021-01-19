@@ -182,7 +182,7 @@ class MyTabWidget(QWidget):
 
     def tab3_interface(self):
         items = ["noEDI", "EDI"]
-        self.comboBox_Y = QComboBox(self)
+        self.comboBox_Y = QComboBox()
 
         self.comboBox_Y.addItems(items)
         
