@@ -2,3 +2,6 @@
 bin/
 build/
 dist/
+cxiate.spec
+.spec
+main.spec
