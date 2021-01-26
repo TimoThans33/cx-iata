@@ -25,4 +25,8 @@ class tab1():
         self.graphWidget.showGrid(x=True, y=True)
         #Set Range
         self.graphWidget.setXRange(0, 10, padding=0)
-        self.graphWidget.setYRange(20000, 55000, padding=0)
+        self.graphWidget.setYRange(0, 55000, padding=0)
+
+    def plot(self, x, y, plotname, color):
+        pen = pg.mkPen(color=color)
+        self.graphWidget.plot(x, y, name=plotname, pen=pen, symbol='+', symbolSize=30, symbolBrush=(color))
