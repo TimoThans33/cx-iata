@@ -2,7 +2,5 @@
 bin/
 build/
 dist/
-cxiate.spec
-.spec
-main.spec
+*.spec
 data/
