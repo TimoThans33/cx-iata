@@ -6,9 +6,9 @@ from glob import glob
 import numpy as np
 import pandas as pd
 
-from tab1 import *
-from tab2 import *
-from tab3 import *
+from app.tab1 import *
+from app.tab2 import *
+from app.tab3 import *
 
 class MyTabWidget(QWidget):
     def __init__(self, parent):
@@ -310,20 +310,20 @@ class MyTabWidget(QWidget):
         self.update_piechart()
 
     def vcsbtn(self):
-        self.btn10.setChecked(False)
-        self.btn11.setChecked(False)
-        self.btn12.setChecked(False)
-        self.btn13.setChecked(False)
+        self.tab2_lib.btn10.setChecked(False)
+        self.tab2_lib.btn11.setChecked(False)
+        self.tab2_lib.btn12.setChecked(False)
+        self.tab2_lib.btn13.setChecked(False)
         self.main_tab2_list[5:8] = [0, 0, 0, 0]
         self.update_piechart()
     def mesbtn(self):
-        self.btn13.setChecked(False)
+        self.tab2_lib.btn13.setChecked(False)
         self.main_tab2_list[12] = 0
         self.update_piechart()
     def edibtn(self):
-        self.btn16.setChecked(False)
-        self.btn17.setChecked(False)
-        self.btn18.setChecked(False)
+        self.tab2_lib.btn16.setChecked(False)
+        self.tab2_lib.btn17.setChecked(False)
+        self.tab2_lib.btn18.setChecked(False)
         self.main_tab2_list[9:11] = [0, 0, 0]
         self.update_piechart()
 

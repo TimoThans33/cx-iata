@@ -1,8 +1,9 @@
 from PyQt5.QtCore import *
 from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
+from PyQt5 import sip
 
-from tabs import *
+from app.tabs import *
 
 class App(QMainWindow):
     def __init__(self):
